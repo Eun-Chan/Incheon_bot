@@ -2,12 +2,12 @@ package com.javaapp.incheon_Bot.dto;
 
 import java.util.ArrayList;
 
-public class keyboardDTO {
+public class KeyBoardDTO {
 
 	private String type;
 	private ArrayList<String> arrayList;
 	 
-	public keyboardDTO(ArrayList<String> arrayList) {
+	public KeyBoardDTO(ArrayList<String> arrayList) {
 		this.type = "buttons";
 		this.arrayList = arrayList;
 	}

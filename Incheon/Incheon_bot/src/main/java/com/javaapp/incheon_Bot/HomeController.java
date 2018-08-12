@@ -16,14 +16,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
-import com.javaapp.incheon_Bot.dto.keyboardDTO;
-import com.javaapp.incheon_Bot.dto.messageDTO;
+import com.javaapp.incheon_Bot.dto.KeyBoardDTO;
+import com.javaapp.incheon_Bot.dto.MessageDTO;
+import com.javaapp.incheon_Bot.dto.RequestMessageDTO;
+import com.javaapp.incheon_Bot.dto.ResponseDTO;
+
+import Command.FoodCommand;
+import Command.ICommand;
 
 /**
  * Handles requests for the application home page.
  */
 @RestController
 public class HomeController {
+	
+	ICommand com;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
@@ -45,25 +52,46 @@ public class HomeController {
 	}
 
 	@RequestMapping("/keyboard")
-	public keyboardDTO keybard() {
+	public KeyBoardDTO keybard() {
 		System.out.println("keyboard()");
 
 		ArrayList<String> btn = new ArrayList<String>();
 		
-		btn.add("ÌïôÏãù Î©îÎâ¥");
+		btn.add("«–Ωƒ ∏ﬁ¥∫");
+		btn.add("√≥¿Ω¿∏∑Œ");
 		
-		return new keyboardDTO(btn);
+		return new KeyBoardDTO(btn);
 	}
 	
 	
 	@RequestMapping("/message")
-	public messageDTO message(@RequestBody messageDTO msgDTO) {
+	public ResponseDTO message(@RequestBody RequestMessageDTO req) {
 		System.out.println("message()");
 		
-		messageDTO msg = new messageDTO();
+		ResponseDTO res = new ResponseDTO();
+		MessageDTO mes = new MessageDTO();
 		
+		if(req.getContent().equals("«–Ωƒ ∏ﬁ¥∫")) {
+			
+			com = new FoodCommand();
+			
+			com.execute(req);
+		}
 		
+		else if(req.getContent().equals("√≥¿Ω¿∏∑Œ")) {
+			
+			ArrayList<String> btn = new ArrayList<String>();
+			btn.add("«–Ωƒ ∏ﬁ¥∫");
+			btn.add("»®¿∏∑Œ");
+			
+			res.setKeyboard(new KeyBoardDTO(btn));
+			
+			mes.setText("»®¿∏∑Œ");
+			
+		}
 		
-		return msg;
+		res.setMessage(mes);
+		
+		return res;
 	}
 }
