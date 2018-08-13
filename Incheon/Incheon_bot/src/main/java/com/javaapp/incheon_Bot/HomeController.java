@@ -64,14 +64,14 @@ public class HomeController {
 		try {
 		Document doc = Jsoup.connect(url).get();
 		
-		//½Ä´ç ÀÌ¸§
+		//ì‹ë‹¹ ì´ë¦„
 		Element elem1 = doc.select("ul.subTab li a").get(0);
 		String resName = elem1.select("a").html();
 		
-		//½Ä´ç ÄÚ³Ê
+		//ì‹ë‹¹ ì½”ë„ˆ
 		Elements elem2 = doc.select("div.sickdangmenu dl");
 		
-		System.out.println("½Ä´ç ÀÌ¸§ : " +resName);
+		System.out.println("ì‹ë‹¹ ì´ë¦„ : " +resName);
 		
 		for(Element elem : elem2) {
 			System.out.println(elem.select("dt").text());
@@ -80,7 +80,7 @@ public class HomeController {
 		
 		} catch(Exception e) {}
 		
-		return new KeyBoardDTO(new String[] {"ÇĞ½Ä ¸Ş´º" , "Ã³À½À¸·Î"});
+		return new KeyBoardDTO(new String[] {"í•™ì‹ ë©”ë‰´" , "ì²˜ìŒìœ¼ë¡œ"});
 	}
 	
 	
@@ -91,19 +91,19 @@ public class HomeController {
 		ResponseMessageDTO res = new ResponseMessageDTO();
 		MessageDTO mes = new MessageDTO();
 		
-		if(req.getContent().equals("ÇĞ½Ä ¸Ş´º")) {
+		if(req.getContent().equals("í•™ì‹ ë©”ë‰´")) {
 			
 			com = new FoodCommand1();
 			
 			com.execute(req);
 		}
 		
-		else if(req.getContent().equals("Ã³À½À¸·Î")) {
+		else if(req.getContent().equals("ì²˜ìŒìœ¼ë¡œ")) {
 			
-			String[] btn = {"ÇĞ½Ä ¸Ş´º","Ã³À½À¸·Î"};
+			String[] btn = {"í•™ì‹ ë©”ë‰´","ì²˜ìŒìœ¼ë¡œ"};
 			res.setKeyboard(new KeyBoardDTO(btn));
 			
-			mes.setText("È¨À¸·Î");
+			mes.setText("í™ˆìœ¼ë¡œ");
 			
 		}
 		

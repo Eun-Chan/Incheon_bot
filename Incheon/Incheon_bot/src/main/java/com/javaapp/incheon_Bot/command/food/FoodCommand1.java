@@ -13,17 +13,17 @@ public class FoodCommand1 implements ICommand{
 	@Override
 	public void execute(RequestMessageDTO req) {
 		// TODO Auto-generated method stub
-		System.out.println("ÇĞ»ı1½Ä´ç command.execute()");
+		System.out.println("ì‹ë‹¹ì´ë¦„ command.execute()");
 		
 		String url = "http://www.inu.ac.kr/com/cop/mainWork/foodList1.do?siteId=inu&id=inu_050110010000";
 		
 		try {
 		Document doc = Jsoup.connect(url).get();
 		
-		//½Ä´ç ÀÌ¸§ ¾ò±â
+		//ì‹ë‹¹ ì´ë¦„
 		Element elem = doc.select("ul.subTab li a").get(0);
 		
-		//½Ä´ç ¸Å´º
+		//ì‹ë‹¹ ì½”ë„ˆ
 		Elements elem2 = doc.select("ul.sickdangmenu dl dt ");
 		
 		System.out.println(elem);
