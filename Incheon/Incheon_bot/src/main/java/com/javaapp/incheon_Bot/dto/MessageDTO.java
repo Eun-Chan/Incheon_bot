@@ -4,8 +4,7 @@ public class MessageDTO {
 
 	private String text;
 	private PhotoDTO photo;
-	private MessageButtonDTO messageButtonDTO;
-	
+	private MessageButtonDTO message_button;
 	public String getText() {
 		return text;
 	}
@@ -18,11 +17,11 @@ public class MessageDTO {
 	public void setPhoto(PhotoDTO photo) {
 		this.photo = photo;
 	}
-	public MessageButtonDTO getMessageButtonDTO() {
-		return messageButtonDTO;
+	public MessageButtonDTO getMessage_button() {
+		return message_button;
 	}
-	public void setMessageButtonDTO(MessageButtonDTO messageButtonDTO) {
-		this.messageButtonDTO = messageButtonDTO;
+	public void setMessage_button(MessageButtonDTO message_button) {
+		this.message_button = message_button;
 	}
 	
 }

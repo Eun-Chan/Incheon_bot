@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
+import com.javaapp.incheon_Bot.command.FoodCommand;
+import com.javaapp.incheon_Bot.command.ICommand;
 import com.javaapp.incheon_Bot.dto.KeyBoardDTO;
 import com.javaapp.incheon_Bot.dto.MessageDTO;
 import com.javaapp.incheon_Bot.dto.RequestMessageDTO;
-import com.javaapp.incheon_Bot.dto.ResponseDTO;
+import com.javaapp.incheon_Bot.dto.ResponseMessageDTO;
 
-import Command.FoodCommand;
-import Command.ICommand;
 
 /**
  * Handles requests for the application home page.
@@ -65,10 +65,10 @@ public class HomeController {
 	
 	
 	@RequestMapping("/message")
-	public ResponseDTO message(@RequestBody RequestMessageDTO req) {
+	public ResponseMessageDTO message(@RequestBody RequestMessageDTO req) {
 		System.out.println("message()");
 		
-		ResponseDTO res = new ResponseDTO();
+		ResponseMessageDTO res = new ResponseMessageDTO();
 		MessageDTO mes = new MessageDTO();
 		
 		if(req.getContent().equals("학식 메뉴")) {
