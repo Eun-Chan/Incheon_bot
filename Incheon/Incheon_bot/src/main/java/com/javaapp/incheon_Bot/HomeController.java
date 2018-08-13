@@ -55,12 +55,8 @@ public class HomeController {
 	public KeyBoardDTO keybard() {
 		System.out.println("keyboard()");
 
-		ArrayList<String> btn = new ArrayList<String>();
 		
-		btn.add("ÇĞ½Ä ¸Ş´º");
-		btn.add("Ã³À½À¸·Î");
-		
-		return new KeyBoardDTO(btn);
+		return new KeyBoardDTO(new String[] {"í•™ì‹ ë©”ë‰´" , "ì²˜ìŒìœ¼ë¡œ"});
 	}
 	
 	
@@ -71,22 +67,19 @@ public class HomeController {
 		ResponseMessageDTO res = new ResponseMessageDTO();
 		MessageDTO mes = new MessageDTO();
 		
-		if(req.getContent().equals("ÇĞ½Ä ¸Ş´º")) {
+		if(req.getContent().equals("í•™ì‹ ë©”ë‰´")) {
 			
 			com = new FoodCommand();
 			
 			com.execute(req);
 		}
 		
-		else if(req.getContent().equals("Ã³À½À¸·Î")) {
+		else if(req.getContent().equals("ì²˜ìŒìœ¼ë¡œ")) {
 			
-			ArrayList<String> btn = new ArrayList<String>();
-			btn.add("ÇĞ½Ä ¸Ş´º");
-			btn.add("È¨À¸·Î");
-			
+			String[] btn = {"í•™ì‹ ë©”ë‰´","ì²˜ìŒìœ¼ë¡œ"};
 			res.setKeyboard(new KeyBoardDTO(btn));
 			
-			mes.setText("È¨À¸·Î");
+			mes.setText("í™ˆìœ¼ë¡œ");
 			
 		}
 		

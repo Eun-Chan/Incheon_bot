@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class KeyBoardDTO {
 
 	private String type;
-	private ArrayList<String> arrayList;
+	private String[] buttons;
 	 
-	public KeyBoardDTO(ArrayList<String> arrayList) {
+	public KeyBoardDTO(String[] buttons) {
 		this.type = "buttons";
-		this.arrayList = arrayList;
+		this.buttons = buttons;
 	}
 
 	public String getType() {
@@ -20,11 +20,11 @@ public class KeyBoardDTO {
 		this.type = type;
 	}
 
-	public ArrayList<String> getArrayList() {
-		return arrayList;
+	public String[] getButtons() {
+		return buttons;
 	}
 
-	public void setArrayList(ArrayList<String> arrayList) {
-		this.arrayList = arrayList;
+	public void setButtons(String[] buttons) {
+		this.buttons = buttons;
 	}
 }
