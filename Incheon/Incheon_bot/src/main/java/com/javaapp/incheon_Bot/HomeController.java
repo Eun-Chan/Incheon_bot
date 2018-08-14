@@ -58,28 +58,7 @@ public class HomeController {
 	@RequestMapping("/keyboard")
 	public KeyBoardDTO keybard() {
 		System.out.println("keyboard()");
-		
-		String url = "http://www.inu.ac.kr/com/cop/mainWork/foodList2.do?siteId=inu&id=inu_050110030000";
-		
-		try {
-		Document doc = Jsoup.connect(url).get();
-		
-		//식당 이름
-		Element elem1 = doc.select("ul.subTab li a").get(0);
-		String resName = elem1.select("a").html();
-		
-		//식당 코너
-		Elements elem2 = doc.select("div.sickdangmenu dl");
-		
-		System.out.println("식당 이름 : " +resName);
-		
-		for(Element elem : elem2) {
-			System.out.println(elem.select("dt").text());
-			System.out.println(elem.select("dd").text());
-		}
-		
-		} catch(Exception e) {}
-		
+	
 		return new KeyBoardDTO(new String[] {"학식 메뉴" , "처음으로"});
 	}
 	
@@ -93,9 +72,10 @@ public class HomeController {
 		
 		if(req.getContent().equals("학식 메뉴")) {
 			
-			com = new FoodCommand1();
+			// keyboard 초기화 (식당)
+			String[] btn = {"학생 1식당", "생활원식당", "교직원식당","카페테리아 식당","사범대 식당"};
+			KeyBoardDTO keyboard = new KeyBoardDTO(btn);
 			
-			com.execute(req);
 		}
 		
 		else if(req.getContent().equals("처음으로")) {
@@ -104,7 +84,17 @@ public class HomeController {
 			res.setKeyboard(new KeyBoardDTO(btn));
 			
 			mes.setText("홈으로");
+		}
+		
+		else if(req.getContent().equals("학생 1식당")) {
 			
+			// 학생 1식당 크롤링
+			com = new FoodCommand1();
+			com.execute(req);
+			
+			// keyboard 초기화 (식당)
+			String[] btn = {"학생 1식당", "생활원식당", "교직원식당","카페테리아 식당","사범대 식당"};
+			KeyBoardDTO keyboard = new KeyBoardDTO(btn);		
 		}
 		
 		res.setMessage(mes);
