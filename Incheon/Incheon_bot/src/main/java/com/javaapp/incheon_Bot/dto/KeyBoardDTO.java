@@ -1,7 +1,5 @@
 package com.javaapp.incheon_Bot.dto;
 
-import java.util.ArrayList;
-
 public class KeyBoardDTO {
 
 	private String type;

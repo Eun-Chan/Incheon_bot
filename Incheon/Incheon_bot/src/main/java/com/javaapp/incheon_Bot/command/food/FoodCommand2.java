@@ -11,32 +11,39 @@ import com.javaapp.incheon_Bot.dto.RequestMessageDTO;
 public class FoodCommand2 implements ICommand {
 
 	@Override
-	public void execute(RequestMessageDTO req) {
+	public String execute() {
 		// TODO Auto-generated method stub
 		
 		System.out.println("생활원 식당 command.execute()");
 		
 		String url = "http://www.inu.ac.kr/com/cop/mainWork/foodList2.do?siteId=inu&id=inu_050110030000";
 		
+		String result = new String();
+		
 		try {
 		Document doc = Jsoup.connect(url).get();
 		
 		//식당 이름
-		Element elem1 = doc.select("ul.subTab li a").get(0);
-		String resName = elem1.select("a").html();
-		
+		Element elem1 = doc.select("ul.subTab li a").get(1);
+		result = elem1.select("a").html();
+		result += "\n======================\n";
 		//식당 코너
 		Elements elem2 = doc.select("div.sickdangmenu dl");
 		
-		System.out.println("식당 이름 : " +resName);
+		//System.out.println("식당 이름 : " +resName);
 		
 		for(Element elem : elem2) {
 			System.out.println(elem.select("dt").text());
+			result += elem.select("dt").text();
+			result += "\n";
 			System.out.println(elem.select("dd").text());
+			result += elem.select("dd").text();
+			result += "\n\n";
 		}
 		
 		} catch(Exception e) {}
-		
+		result += "======================";
+		return result;
 	}
 
 }

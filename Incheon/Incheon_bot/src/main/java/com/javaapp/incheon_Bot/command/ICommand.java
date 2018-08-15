@@ -4,5 +4,5 @@ import com.javaapp.incheon_Bot.dto.RequestMessageDTO;
 
 public interface ICommand {
 
-	public void execute(RequestMessageDTO req);
+	public String execute();
 }
