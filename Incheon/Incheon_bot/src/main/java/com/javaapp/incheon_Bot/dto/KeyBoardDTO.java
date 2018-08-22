@@ -15,8 +15,7 @@ public class KeyBoardDTO {
 	}
 
 	public void setType(String type) {
-		this.type = type;
-	}
+		this.type = type;	}
 
 	public String[] getButtons() {
 		return buttons;

@@ -1,9 +1,15 @@
 package com.javaapp.incheon_Bot;
 
+import java.net.URL;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
@@ -15,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.javaapp.incheon_Bot.command.ICommand;
 import com.javaapp.incheon_Bot.command.food.FoodCommand;
 import com.javaapp.incheon_Bot.command.help.HelpCommand;
+import com.javaapp.incheon_Bot.command.notices.NoticesCommand;
 import com.javaapp.incheon_Bot.command.weather.WeatherCommand;
 import com.javaapp.incheon_Bot.dto.KeyBoardDTO;
 import com.javaapp.incheon_Bot.dto.MessageButtonDTO;
@@ -55,6 +62,27 @@ public class HomeController {
 	@RequestMapping("/keyboard")
 	public KeyBoardDTO keybard() {
 		System.out.println("keyboard()");
+		
+		String url = "http://www.inu.ac.kr/user/boardList.do?boardId=48510";
+		String result ="(치킨)인천대학교 공지사항(치킨)\n";
+		int cnt = 0;
+		
+		try {
+		
+		Document doc = Jsoup.parse(new URL("http://www.inu.ac.kr/user/boardList.do?boardId=48510").openStream(), "UTF-8", "http://www.inu.ac.kr/user/boardList.do?boardId=48510");
+		Elements elems = doc.select("div.tbList table tbody tr");
+		for(Element elem : elems) {
+			if(cnt == 10) break;
+			System.out.println(cnt);
+			result += elem.select("td.textAL a").html();
+			result += "\n";
+			cnt++;
+		}
+		
+		} catch(Exception e) {}
+		
+		System.out.println(result);
+		
 		
 		return new KeyBoardDTO(btn_init(0));
 	}
@@ -137,8 +165,10 @@ public class HomeController {
 	
 		else if(req.getContent().equals("학사 공지사항")) {
 			
-			
-			
+			// 공지사항 commnad
+			com = new NoticesCommand();
+			res.setKeyboard(new KeyBoardDTO(btn_init(0)));
+			mes.setText(com.execute(req));
 		}
 		
 		else if(req.getContent().equals("사용법")) {

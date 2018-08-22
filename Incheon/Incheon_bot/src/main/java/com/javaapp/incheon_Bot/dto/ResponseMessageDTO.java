@@ -16,6 +16,5 @@ public class ResponseMessageDTO {
 	}
 	public void setKeyboard(KeyBoardDTO keyboard) {
 		this.keyboard = keyboard;
-	}
-	
+	}	
 }

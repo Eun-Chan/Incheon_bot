@@ -13,7 +13,8 @@ public class FoodCommand implements ICommand{
 	@Override
 	public String execute(RequestMessageDTO req) {
 		// TODO Auto-generated method stub
-		String url = "http://www.inu.ac.kr/com/cop/mainWork/foodList1.do?siteId=inu&id=inu_050110010000";
+		
+		String url="";
 		
 		// "학생 1식당", "생활원 식당", "교직원 식당","카페테리아 식당","사범대 식당","처음으로"
 		if(req.getContent().equals("학생 1식당"))
@@ -33,8 +34,7 @@ public class FoodCommand implements ICommand{
 		Document doc = Jsoup.connect(url).get();
 		
 		//식당 이름
-		Element elem1 = doc.select("ul.subTab li a").get(0);
-		result = elem1.select("a").html();
+		result = req.getContent().toString();
 		result += "\n======================\n";
 		//식당 코너
 		Elements elem2 = doc.select("div.sickdangmenu dl");
