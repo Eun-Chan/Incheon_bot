@@ -23,6 +23,21 @@
 	
 	<context:component-scan base-package="com.javaapp.incheon_Bot" />
 	
+	<beans:bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<beans:property name="url" value="jdbc:oracle:thin:@incheondb.cokdryn3xf4z.ap-northeast-2.rds.amazonaws.com:1521:ORCL" />
+		<beans:property name="username" value="ikso2000" />
+		<beans:property name="password" value="dmscks89" />
+	</beans:bean>
+	
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+		<beans:property name="mapperLocations" value="classpath:com/javaapp/incheon_Bot/dao/mapper/*.xml"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="sqlSessionFactory"></beans:constructor-arg>
+	</beans:bean>
 	
 	
 </beans:beans>

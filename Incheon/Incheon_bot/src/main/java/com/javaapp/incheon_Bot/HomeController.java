@@ -6,26 +6,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.apache.ibatis.session.SqlSession;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.javaapp.incheon_Bot.command.ICommand;
 import com.javaapp.incheon_Bot.command.food.FoodCommand;
 import com.javaapp.incheon_Bot.command.help.HelpCommand;
 import com.javaapp.incheon_Bot.command.notices.NoticesCommand;
 import com.javaapp.incheon_Bot.command.weather.WeatherCommand;
+import com.javaapp.incheon_Bot.dao.IDao;
 import com.javaapp.incheon_Bot.dto.KeyBoardDTO;
 import com.javaapp.incheon_Bot.dto.MessageButtonDTO;
 import com.javaapp.incheon_Bot.dto.MessageDTO;
+import com.javaapp.incheon_Bot.dto.NoticeDTO;
 import com.javaapp.incheon_Bot.dto.RequestMessageDTO;
 import com.javaapp.incheon_Bot.dto.ResponseMessageDTO;
 import com.javaapp.incheon_Bot.dto.WeatherDTO;
@@ -36,6 +43,9 @@ import com.javaapp.incheon_Bot.library.LibraryCommand;
  */
 @RestController
 public class HomeController {
+	
+	@Autowired
+	private SqlSession sqlSession;
 	
 	// Command 패턴
 	ICommand com;
@@ -61,28 +71,6 @@ public class HomeController {
 	
 	@RequestMapping("/keyboard")
 	public KeyBoardDTO keybard() {
-		System.out.println("keyboard()");
-		
-		String url = "http://www.inu.ac.kr/user/boardList.do?boardId=48510";
-		String result ="(치킨)인천대학교 공지사항(치킨)\n";
-		int cnt = 0;
-		
-		try {
-		
-		Document doc = Jsoup.parse(new URL("http://www.inu.ac.kr/user/boardList.do?boardId=48510").openStream(), "UTF-8", "http://www.inu.ac.kr/user/boardList.do?boardId=48510");
-		Elements elems = doc.select("div.tbList table tbody tr");
-		for(Element elem : elems) {
-			if(cnt == 10) break;
-			System.out.println(cnt);
-			result += elem.select("td.textAL a").html();
-			result += "\n";
-			cnt++;
-		}
-		
-		} catch(Exception e) {}
-		
-		System.out.println(result);
-		
 		
 		return new KeyBoardDTO(btn_init(0));
 	}
@@ -122,6 +110,7 @@ public class HomeController {
 			
 			// openWeatherAPI
 			com = new WeatherCommand();
+			
 			res.setKeyboard(new KeyBoardDTO(btn_init(0)));
 			mes.setText(com.execute(req));
 		}
@@ -147,7 +136,8 @@ public class HomeController {
 			com = new LibraryCommand();
 			res.setKeyboard(new KeyBoardDTO(btn_init(2)));
 			mes.setText(com.libExecute(req));
-						
+					
+			// 도서관 좌석 메세지 버튼 
 			if(req.getContent().equals("자유열람실1"))
 				imgURL = "http://117.16.225.193:8080/seatmate/SeatMate.php?classInfo=1";
 			else if(req.getContent().equals("자유열람실2"))
@@ -165,9 +155,35 @@ public class HomeController {
 	
 		else if(req.getContent().equals("학사 공지사항")) {
 			
+			res.setKeyboard(new KeyBoardDTO(btn_init(3)));
+			mes.setText(req.getContent());
+		}
+		
+		// "학사","학점교류","일반","장학금","모집채용"
+		else if(req.getContent().equals("학사") || req.getContent().equals("학점교류") || req.getContent().equals("일반") || req.getContent().equals("장학금") || req.getContent().equals("모집채용")) {
+			
+			// 공지사항 메세지 버튼 (홈페이지로 이동)
+			String imgURL = "";
+			
+			if(req.getContent().equals("학사"))
+				imgURL = "http://www.inu.ac.kr/user/boardList.do?boardId=49211&siteId=inu&id=inu_070202000000";
+			else if(req.getContent().equals("학점 교류"))
+				imgURL = "http://www.inu.ac.kr/user/boardList.do?boardId=197438&siteId=inu&id=inu_070211000000";
+			else if(req.getContent().equals("일반"))
+				imgURL = "http://www.inu.ac.kr/user/boardList.do?boardId=49219&siteId=inu&id=inu_070203000000";
+			else if(req.getContent().equals("장학금"))
+				imgURL = "http://www.inu.ac.kr/user/boardList.do?boardId=49227&siteId=inu&id=inu_070204000000";
+			else if(req.getContent().equals("모집채용"))
+				imgURL = "http://www.inu.ac.kr/user/boardList.do?boardId=49235&siteId=inu&id=inu_070205000000";
+			
+			MessageButtonDTO mesBtn = new MessageButtonDTO();
+			mesBtn.setUrl(imgURL);
+			mesBtn.setLabel(req.getContent());
+			mes.setMessage_button(mesBtn);
+			
 			// 공지사항 commnad
 			com = new NoticesCommand();
-			res.setKeyboard(new KeyBoardDTO(btn_init(0)));
+			res.setKeyboard(new KeyBoardDTO(btn_init(3)));
 			mes.setText(com.execute(req));
 		}
 		
@@ -175,6 +191,7 @@ public class HomeController {
 			
 			// 사용법 Command
 			com = new HelpCommand();
+			
 			res.setKeyboard(new KeyBoardDTO(btn_init(0)));
 			mes.setText(com.execute(req));
 		}
@@ -201,7 +218,13 @@ public class HomeController {
 			String[] btn = {"자유열람실1","자유열람실2","자유열람실3","노트북 코너","처음으로"};
 			return btn;
 		}
-		return null;
-	}
+		
+		// idx = 3 , 공지사항 btn
+		else if(idx == 3) {
+			String[] btn = {"학사","학점교류","일반","장학금","모집채용","처음으로"};
+			return btn;
+		}
 	
+		return null;
+	}	
 }

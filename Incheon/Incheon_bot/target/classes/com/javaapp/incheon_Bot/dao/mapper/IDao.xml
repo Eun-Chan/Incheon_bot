@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.javaapp.incheon_Bot.dao.IDao">
+	<select id="listDao" resultType="com.javaapp.incheon_Bot.dto.NoticeDTO">
+		SELECT * FROM NOTICE_TABLE ORDER BY MNUM
+	</select>
+	
+	<insert id="writeDao">
+		INSERT INTO NOTICE_TABLE (MNUM,MCONTENT,MHITS) VALUES (NOTICE_SEQ.NEXTV , #{param1}, #{param2})
+	</insert>
+	
+</mapper>
