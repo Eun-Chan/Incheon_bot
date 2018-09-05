@@ -1,16 +1,10 @@
 package com.javaapp.incheon_Bot;
 
-import java.net.URL;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.ibatis.session.SqlSession;
-import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import com.javaapp.incheon_Bot.command.ICommand;
 import com.javaapp.incheon_Bot.command.food.FoodCommand;
 import com.javaapp.incheon_Bot.command.help.HelpCommand;
 import com.javaapp.incheon_Bot.command.notices.NoticesCommand;
 import com.javaapp.incheon_Bot.command.weather.WeatherCommand;
-import com.javaapp.incheon_Bot.dao.IDao;
+import com.javaapp.incheon_Bot.command.wifi.WifiCommand;
 import com.javaapp.incheon_Bot.dto.KeyBoardDTO;
 import com.javaapp.incheon_Bot.dto.MessageButtonDTO;
 import com.javaapp.incheon_Bot.dto.MessageDTO;
-import com.javaapp.incheon_Bot.dto.NoticeDTO;
 import com.javaapp.incheon_Bot.dto.RequestMessageDTO;
 import com.javaapp.incheon_Bot.dto.ResponseMessageDTO;
-import com.javaapp.incheon_Bot.dto.WeatherDTO;
 import com.javaapp.incheon_Bot.library.LibraryCommand;
 
 /**
@@ -187,6 +176,15 @@ public class HomeController {
 			mes.setText(com.execute(req));
 		}
 		
+		else if(req.getContent().equals("교내 Wifi")) {
+			
+			// Wifi Command
+			com = new WifiCommand();
+			
+			res.setKeyboard(new KeyBoardDTO(btn_init(0)));
+			mes.setText(com.execute(req));
+		}
+		
 		else if(req.getContent().equals("사용법")) {
 			
 			// 사용법 Command
@@ -198,14 +196,13 @@ public class HomeController {
 		
 		res.setMessage(mes);
 		return res;
-		
 	}
 		
 	public String[] btn_init(int idx) {
 		
 		// idx = 0 , 홈 btn
 		if(idx == 0) {
-			String[] btn = {"학식 메뉴", "인천 날씨","열람실 좌석현황","학사 공지사항","사용법"};
+			String[] btn = {"학식 메뉴", "인천 날씨","열람실 좌석현황","학사 공지사항","교내 Wifi","사용법"};
 			return btn;
 		}
 		// idx = 1 , 식당 btn
